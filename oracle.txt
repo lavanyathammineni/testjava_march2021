@@ -1,0 +1,616 @@
+filehandling-------->we can select data in sequentially not from random
+
+databases are three types
+1.sql-->security---->oracle,Mysql,postgreSql
+2.Nosql--->no security,unstrutured---->mongoDB,canssandra,couchbaseDB
+3.GraphDb---->network,graphdb,
+new graphdb----->NEO4j
+
+FTP---file transfer protcol---->used to transfer multiple files .....
+
+use sql for persistance use
+persistance means if we close also we will get the data.
+
+database adavntages:
+--->sharing data is easy
+---->oracle does the transaction control--->transfer funds-->checkbal->withdraw--->deposited 
+---->bal deducted---->amt should be subtracted from existing
+
+all dis transaction are in-bulit functions in databases.
+
+also provides consistency
+
+also supports--->ACID properities
+Automicity--->
+consistent--->behavior  gets  manned for loner period of time database maintain data correctly
+isolation--->every transaction
+consistent--->
+Durable--->longer period of time system will work correctly
+Integrity--->correctness of data
+
+in sql data stored in the form of table also called relation
+
+columns--->fields--->attribute
+row--->tuple--->record
+  cretate table--structure
+insert data,retrieve,delete,modify   alos called CRUD data
+
+sql is divided into
+1.sql---->normal quries
+2.PL(prodecural language)-sql--->using while,if, functions,procedures,cursors,triggers are donw with pl-sql 
+
+sql--->
+DQL--->data query language---->select
+DCL---->data control lanagugae---->grant,revoke(use permission oor reject to user)
+TCL---->transaction control language--->(commit,rollback,savepoint)
+commit--->make the changes permenant
+rollback--->same as undo, rollback is done only if commit does not perform
+rollback is possible till the previous commit
+savepoint--->
+delete 3 records
+save point A;
+add  2 records
+save point B;
+update 1 record
+
+rollback can done only last row
+ rollabck A// can be done upto savepoint A
+
+
+DML---->Data manipulation language--->insert ,update,delete,merge
+DDL---->data definition language--->create,alter,drop,trunacte,rename
+drop-->to delete structure and data of a table
+truncate--->will delete only data but empty table will remain
+
+if accept the data should validate the data
+imp constraint in table are
+--->primary key(unique,not null)
+----->foriegnkey
+------->check
+--------->default
+--------->not null
+
+unique--->no duplicates but any no.of null values are allowed.
+
+primary key is the colum or combination of the column which finds  identiy the unqiue.in the table 
+primary key does not allow null(not null)
+----->not null-------->duplictaes are allowed but cannot empty.
+------>check---->condition
+unique---->no duplicates but any no of null values are allowed
+foreign key---->refertial integrity
+
+
+
+
+sysdate---->(todays date)is used to return the current date..
+default sysdate----->todays date
+
+
+
+in sql every user has 
+
+foriegn key:It is used to relate the two tables. A foreign key in one table points to a primary key in another table. A foreign key can be used to make sure that the row in one table has corresponding row/rows in another table. The referenced table is called the parent table
+
+foreign key,primary key,unique ,check are called table level constraint.(we can use at end of the attribute).
+bot null, defalut field called level constraints. // (we can use immediately after the attribute )
+
+
+modify table
+add column,constraint
+drop column,constraint
+modify
+----delete
+alter table courses
+drop constraint fk_rm
+
+---modify the size of cname
+alter table courses 
+modify cname varchar2(20);
+
+---add 
+alter table mydept
+add manager varchar2(30);
+
+desc mydept
+
+--update
+update mydept
+set dloc="mumbai' where deptno=11;
+rollback;  //undo the changes
+
+update mydept
+set dloc="mumbai' where deptno=11;
+commit///change permenant
+
+
+---add new column
+update mydept
+set manager='kishori'
+where deptno=13;
+---delete manager
+alter table mydepts
+drop column manager;
+
+truncate table employee;
+ 
+drop table employee;
+
+((assisgnment
+select *from emp
+where ename like 'A%' or  ename like '%C%' or ename like '%R';))
+
+REGEXP_LIKE
+
+select empno,ename,sal,comm,sal+comm
+ from emp;
+-----to put null we will use nvl
+select empno,ename,sal,nvl(comm,0),sal+nvl(comm,0)
+ from emp;
+
+select empno,ename,sal,nvl(comm,0),sal+nvl(comm,0) "Net sal"
+
+selcet empno,ename,sal,sal+sal*0.10 salary   //(sal,sal*1.10 salary)
+from emp;
+
+//sorted order
+select empno,ename,sal
+from emp
+order by ename desc;    //descending order
+
+select empno,ename,sal
+from emp
+order by ename ;         //ascending ordr by default
+
+----display 
+select empno,ename,sal,mgr,comm
+from emp
+order by mgr,ename desc;
+
+
+select empno,ename,sal
+from emp
+where sal+sal*0.10=880;
+
+select *
+from emp
+where ename='allen';   /no rows selected
+
+
+select *
+from emp
+where lower(ename)='allen';
+//show all emp in lower case
+select lower(ename)
+from emp;
+
+---number functions(abs is used to convert negative values into postive values)
+select  empno,ename,abs(com-sal)  
+from emp;
+(abs-absolute)
+select abs(-20)
+from dual;
+
+select  empno,ename,com-sal
+from emp;
+
+select sqrt(4)  ///why use dual(sqrt(4)) we dont have to retrieve from any table so we can  from dual;          use dummy table
+
+
+select round(15.678579,2)
+from dual;                      ----15.68
+
+select trunc(15.678579,2)
+from dual;                   --15.67
+
+select ceil(15.678579)
+from dual;                    --16
+
+select floor(15.678579)
+from dual;     ----15
+---to get experience of emp
+select empno,ename,floor((sysdate-hiredate)/365) experience
+from emp;            
+
+------character function
+INITCap------shows first captial rest of leters small  
+LTRIM---remove any spaces in left hand side
+RTRIM---remove any spaces in right hand side
+LPAD
+RPAD-
+select empno,initcap(ename)
+from emp;
+--------gives job first two letters
+select empno,ename,job,substr(job,1,2)
+from emp;
+-----generate email by concatenating name 
+select empno,ename,job,substr(job,1,2),concat(ename,'@mycompany.com') email
+from emp;
+-----generate email by concatenating name followed by 3 letter of job followed by @mycompany.com
+select empno,ename,concat(concat(ename,substr(job,1,3)),'@mycompany.com')
+from emp;
+------replace
+select empno,ename,replace(ename,'AR','BB')
+from emp;
+-----make the length of string equal
+select ename,rpad(ename,7,'*')
+from emp;
+select ename,lpad(ename,7,'*')
+from emp;
+------data function
+Months_Between
+Last_day
+Next_day
+current_date
+current_timestamp
+Extract
+Round
+Trunc
+
+select empno,ename,months_between(hiredate,sysdate)
+from emp;
+select empno,ename,months_between(sysdate,hiredate)
+from emp;
+select empno,ename,months_between(sysdate,hiredate)/12
+from emp;
+select empno,ename,floor(months_between(sysdate,hiredate)/12)
+from emp;
+-----find date after 2 months
+select add_months(sysdate,2)
+from dual;
+
+select sysdate+6
+from dual;
+
+select extract(year of sysdate)
+from dual;
+
+select empno,ename,hiredate
+from emp;
+where extract(month from hiredate)=12;
+
+select empno,ename,hiredate
+from emp
+where extract(month from hiredate)=12;
+
+select nextDate(sysdate,'friday')
+from dual;
+
+select last_day(sysdate)
+from dual;
+------conversion function(to show date in my format)\To_Char---convert a number or date to a specific format
+To_Date--to convert oracle format into our format
+To_
+
+select empno,ename,hiredate,to_char(hiredate,'DD month, yy')
+from emp;
+select empno,ename,hiredate,to_char(hiredate,'dd/mm/yyyy')
+from emp;
+ ------insert new row
+insert into emp values(12,'kishori','MANAGER',7839,to_date('12/01/80','dd/mm/yy'),3456,345,10);
+----
+select to_char(sal,'$99,999')
+from emp;
+----group functions
+sum
+
+select sum(sal)
+from emp;
+select avg(sal)
+from emp;
+select  emp avg(sal),sum(sal),max(sal),min(sal),count(*)
+from emp;
+-----find sal in deptno
+select job avg(sal),sum(sal),max(sal),min(sal),count(*)
+from emp
+group by deptno;
+
+select avg(sal),sum(sal),max(sal),min(sal),count(*)
+from emp
+group by job;
+
+select sum(sal)
+from emp
+where   job='CLERK';
+
+select job,sum(sal),count(*)
+from emp
+group by job;
+
+select job,sum(sal),count(*)
+from emp
+group by job
+having sum(sal)>5000;
+-----to display all departments which has more than 3 employess
+select deptno,count(*) 
+from emp
+group by deptno
+having count(*)>3;
+---find all departments who has min 2 salesman 
+
+select deptno,count(comm),count(*) count
+from emp
+where job='SALESMAN'
+group by deptno
+having count(*)>=2;
+
+select deptno,job,sum(sal)
+from emp
+group by deptno,job
+order by deptno;
+
+-----find how many employees are in each department
+select deptno,count(deptno)
+from emp
+group by deptno;
+---find all jobs for which avg sal>2000
+select job
+from emp
+where deptno=20
+group by job
+having avg(sal)>2000; 
+-----find all empolyess whose name is smith and with sal>2500 
+select *from emp
+where ename='SMITH' and sal>2500;
+select *from emp
+where  sal>2500; and ename='SMITH'
+
+nested query 
+joins
+if the o/p columns are from single table then use nested query
+----if the o/p columns are multiple tables then go for joins
+
+display all empolyess who works in hr department
+select * from emp 
+where deptno=(select deptno
+                           from dept
+                           where dname='HR';
+
+-----find all empolyee names who works in SMITH"S dept
+select ename,deptno
+from emp
+where ename<> 'SMITH' and  deptno in(select  deptno
+                           from emp
+                           where  ename='SMITH');
+
+select ename,deptno
+from emp
+where   deptno in(select  deptno
+                           from emp
+                           where  ename='SMITH')  and ename<> 'SMITH' ;
+------find all empolyess whos manager is same as ALLEN's manager
+select*from emp
+where mgr in(
+                    select mgr
+                     from emp
+                      where ename='ALLEN');
+
+-------child query will  get executed first ,only once
+then parent query will get executed
+------find all empolyees whose sal>smith and <allen's sal
+select *
+from emp
+where sal between (select sal
+                    from emp where enam='SMITH') and (select sal
+                                                                                      from emp
+                                                                                             where ename='ALLEN');
+--------find all employees who do not work in WARD's department
+select *
+from emp
+where deptno not in(select deptno
+                                   from emp
+                                   where ename='WARD');
+-------find all empolyess whose sal>minimum sal of dept 10
+select * 
+from emp
+where sal> (select min(sal)
+                               from emp
+                                where deptno=10);
+--------find all empolyee with sal>avg sal of'SMITH's sept
+select 
+*from emp
+where  sal> (select avg(sal)
+                   from emp
+                    where deptno=(select deptno
+                                              from emp
+                                               where ename='SMITH'));
+------find all empolyess with sal<avg of 'HR' department
+select 
+* from emp
+where sal <(select avg(sal)
+                    from emp
+                    where deptno=(select deptno
+                                                from dept
+                                                 where dname='HR'));
+-------find all employess with sal>avg sal of there own dept
+
+select *
+from emp e 
+where sal<(select avg(sal)
+                    from emp d
+                    where d.deptno=e.deptno);
+-----find all empolyess whose sal>avg sal of all employees who work under same manager of his/her own
+--------this type of queries called co-related queries
+select 
+*from emp e
+where sal >(select avg(sal)
+                    from emp d
+                    where d.mgr=e.mgr);
+co-related quries are two types
+1.exists---gives true if the child query returns sone rows
+2.not exist----gives true if child query did not return any row
+
+------find all departments in which no employess are there
+select *
+from dept
+where not exists (select * from emp 
+                      where emp.deptno=dept.deptno);
+
+faculty
+room
+course(cid,cname,rid,fid)       desc user_tables
+
+select *
+from ROOM r
+where not exists (select *
+                                 from COURSES c
+                                  where c.rid=r.rid);
+
+room 50 rows and 5 colums
+in course  
+once for each row in outer table
+
+---------find all faculty who are not assigned for any course
+ SELECT * 
+FROM FACULTY f
+WHERE NOT exists(select * 
+                             from COURSES c
+                              where c.rid=f.rid);
+co-related query beacuse it is dependent of faculty
+
+display all course and faculty assigned to the course
+select *
+from COURSES C,FACULTY f
+where c.fid=f.fid;
+Joins are two types
+cross join
+inner join:
+                equi join
+                non equi join
+                self join
+outer join
+                left outer,right outer,full outer join
+cross join:n rows m rows=m*n
+---select empno,ename,e.deptno,d.deptno,d.dname
+from emp e,dept d;
+inner join
+------select empno,ename,e.deptno,d.deptno,dname
+        from emp e  inner join  dept d
+        on e.deptno=d.deptno;
+----display employee name and department name for all who are in deptno 10 or 20
+  select ename,dname,e.deptno,d.deptno
+  from emp e inner join dept d
+  on e.deptno= d.deptno;
+  where e.deptno in (10,20);
+------display all courses and faculty names for all faculty whose spl subject is java
+SELECT *
+FROM COURSES C INNER JOIN FACULTY F
+ON C.FID=F.FID
+WHERE F.SKILL1='JAVA' OR F.SKILL2='JAVA';
+self join
+-------find all empolyess and their manager names
+select e.empno,e.ename,e.mgr,m.empno "mgr no",m.ename mgrname
+from emp e,emp m
+where e.mgr=m.empno;
+
+
+
+select empno,ename,avg(sal),deptno;
+from emp 
+where deptno=10;
+d
+select  sal
+
+
+select empno,ename,sal ,grade,losal,hisal
+from emp e inner join  salgrade s
+on e.sal between s.losal and s.hisal;
+
+-----course details with room name
+select cid,cname,c,rid,r.rid,r.rname
+from COURSES c inner join ROOM r
+on c.rid=r.rid;
+---------display course name,room name,faculty name
+selectc.cid,c.cname,f.fname,r.rname
+from COURSES c inner join FACULTY f on c.fid=f.fid
+inner join ROOM on c.rid=r.rid;
+
+selectc.cid,c.cname,f.fname,r.rname
+from courses c ,faculty f ,room r 
+where  c.rid=r.rid and c.fid=f.fid;
+-----display ename,dname, and grade of employee
+select ename,sal,grade        (old version)
+from emp e ,dept d ,salgrade s
+where e.deptno=d.deptno and sal between s.losal and s.hisal;
+
+select ename,sal,grade     (new version)
+from emp e inner join dept d  
+on e.deptno=d.deptno inner join salgrade s
+on sal between s.losal and s.hisal;
+
+-------------inner join will give only matching rows
+-------corelated non matching
+---------both matching and non matching use outer join
+outer join
+select empno,ename,e.deptno,d.deptno,d.dname
+from emp e right outer join dept d
+on e.deptno=d.deptno;
+
+select empno,ename,e.deptno,d.deptno,d.dname
+from dept d  left outer 
+join emp e
+on e.deptno=d.deptno;
+
+
+insert into emp(empno,ename,job,mgr,hiredate,sal,comm) values(12,'rajesh','manager',7689,'23-jan-80',3452,300);
+-----------dispaly all departments in which no employee 
+select ename,dname         (new version)
+from emp e right outer join dept d on e.deptno=d.deptno
+where e.empno is null;
+
+select ename,dname(old version)
+from emp e , dept  
+where nd e.deptno(+)=d.deptno
+e.empno is null;
+
+---find all courses and rooms whcih are assigned to some courses and also rooms which are vacant
+select c.cid,c.cname,r.rid,r.rname
+from courses c right outer join rooms r  
+on c.rid=r.rid;
+--------set operetors
+union,intersect,minus
+select *from emp where deptno=10
+union
+select * from emp where sal>2000
+minus
+select *from emp where deptno=10;
+------list all employees working in our company
+select *f
+from indemp
+union
+select * from usemp
+union
+select * from japanemp;
+-------list all employees working in either india or us or both locations
+select * from inemp
+union all
+select *form usemp
+-------views
+when the query is compliacted and you want to hide complex logic 
+---if you want to hide table name for security
+---if you want to give limited access to data
+(cannot perform dml operations on view)
+create view mydept10
+as
+select *
+from emp
+where deptno=10;
+drop view my view(to delete view)
+{create view my view
+as
+select *from emp}------to create view
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
