@@ -1,0 +1,64 @@
+  1  create table audit_product(
+  2  usernm varchar2(40),
+  3  event date,
+  4  prodid number,
+  5  prodname varchar2(40),
+  6  oldp number,
+  7  newp number
+  8* )
+  
+  SQL> create table historyproduct
+  2  as
+  3  select * from product
+  4  where 1=2;
+  
+  
+create or replace trigger prodtrig after insert or delete or update on product
+FOR EACH ROW
+begin
+  if deleting then
+	insert into historyproduct values(:old.pid,:old.pname,:old.price,:old.mdate,:old.cid,:old.sid,:old.quantity);
+  elsif inserting then
+	insert into historyproduct values(:new.pid,:new.pname,:new.price,:new.mdate,:new.cid,:new.sid,:new.quantity);
+  else
+	  insert into historyproduct values(:new.pid,:new.pname,:new.price,:new.mdate,:new.cid,:new.sid,:new.quantity);
+	if :old.price<>:new.price then
+	  insert into audit_product values(USER,sysdate,:old.pid,:old.pname,:old.price,:new.price);
+	end if;
+  end if;
+end;
+/
+
+
+
+
+
+
+
+  1  create or replace function getemail(pename in varchar2,pjob in varchar2) return varchar2
+  2  as
+  3  email varchar2(50);
+  4  begin
+  5       email:=(pename||'.'||substr(pjob,1,3)||'@mycompany.com');
+  6       return email;
+  7* end;
+  
+  
+  
+  
+  
+  
+  
+  
+    1  create or replace procedure findsaljob(pempno in emp.empno%type)
+  2  as
+  3  emprec emp%rowtype;
+  4  num number;
+  5  begin
+  6     num:=&n;
+  7     select * into emprec
+  8     from emp
+  9     where empno=num;
+ 10     dbms_output.put_line(emprec.ename||' '||emprec.sal);
+ 11* end;
+SQL> /
